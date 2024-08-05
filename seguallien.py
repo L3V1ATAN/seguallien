@@ -13,19 +13,19 @@ import nmap
 import os
 
 class SeguAllien:
+    @staticmethod
     def jmap(lip):
         nm = nmap.PortScanner()
         print('Ejecucion jmap...')
-        results = nm.scan(arguments='-sS -sV -n -Pn --top-ports 1000 -iL '+lip)
-        port_open=''
-        open_port=[]
-        #results = nm.scan(arguments='-n -Pn -p 21 --script=/usr/share/nmap/scripts/ftp-anon.nse  -iL '+lip)
+        results = nm.scan(arguments='-sS -sV -n -Pn --top-ports 1000 -iL ' + lip)
+        port_open = ''
+        open_port = []
+        #results = nm.scan(arguments='-n -Pn -p 21 --script=/usr/share/nmap/scripts/ftp-anon.nse  -iL ' + lip)
         #Script de vulnerabilidades
-        #results=nm.scan(arguments='-p 21,23,80,3389 --script=/usr/share/nmap/scripts/vulners.nse -iL'+lip)
+        #results = nm.scan(arguments='-p 21,23,80,3389 --script=/usr/share/nmap/scripts/vulners.nse -iL ' + lip)
         #os.system('clear')
-        #print (nm.command_line())
-        #print (nm.scaninfo())
-        #for host in nm.all_hosts():
+        #print(nm.command_line())
+        #print(nm.scaninfo())
         for host in nm.all_hosts():
             print('----------------------------------------------------')
             print('Host : %s (%s)' % (host, nm[host].hostname()))
@@ -34,16 +34,17 @@ class SeguAllien:
                 print('++++++++++++++++++++++++++++++++++++')
                 print('Protocol : %s' % proto)
                 lport = nm[host][proto].keys()
-                sorted(lport)
-                for port in lport:
-                    print ('port : %s\tstate : %s' % (port, nm[host][proto][port]['state']))
-                    port_open=port_open+' '+str(port)
-                   # print('Port OPEN: '+port_open+' '+str(host))
-        #Convierte los puesrtos de string a lista
-        open_port=str.split(port_open)          
+                sorted_lport = sorted(lport)
+                for port in sorted_lport:
+                    print('port : %s\tstate : %s' % (port, nm[host][proto][port]['state']))
+                    port_open = port_open + ' ' + str(port)
+                    # print('Port OPEN: ' + port_open + ' ' + str(host))
+        #Convierte los puertos de string a lista
+        open_port = str.split(port_open)          
         deldupli(open_port)
     
-    def script(sip,sport):
+    @staticmethod
+    def script(sip, sport):
         os.system('clear')
         os.system(f"nmap -sV -Pn --script auth -p{sport} --open -oN auth_{sip}.nmap --system-dns --stats-every 3s {sip} -vvv")
         os.system(f"nmap -sV -Pn --script default -p{sport} --open -oN default_{sip}.nmap --system-dns --stats-every 3s {sip} -vvv")
@@ -58,8 +59,8 @@ def deldupli(open_puerto):
     print('Puertos Abiertos :')    
     #Imprimir
     for i in range(0, len(open_puerto)):
-        print(open_puerto[i],end=",")
-        
+        print(open_puerto[i], end=",")
+
 def usage():
     print ("""Uso: seguallien.py {OPTION} {CADENA | HOST}
      OPCIONES:
@@ -67,7 +68,6 @@ def usage():
       -iL, : Lista de IPs de archivo
      EJEMPLOS
       python seguallien.py -iL archivo""")
-
 
 def banner():
     print ("""
@@ -83,28 +83,27 @@ def banner():
     3  Script auth default safe
     4. Other options two  """ )
     
-
 def main():  
     banner()
     opc = input('    Ingrese opcion : ')
     match opc:
         case '1':
-            print ('Entro opcon 1')
+            print ('Entro opcion 1')
             ip = input('    Ingrese nombre archivo con listado de IPs : ')
             #os.system('clear')
             banner()
             SeguAllien.jmap(ip)
         case '2':
-            print ('Entro opcon 2')  
+            print ('Entro opcion 2')  
         case '3':
-            print ('Entro opcon 3')
+            print ('Entro opcion 3')
             ipscript = input('    Ingrese la Ip a revisar : ')
-            portcript = input('   Ingrese la Puertos a revisar : ')
+            portscript = input('   Ingrese la Puertos a revisar : ')
             os.system('clear')
             banner()
-            SeguAllien.script(ipscript,portcrip)
+            SeguAllien.script(ipscript, portscript)
         case '4':
-            print ('Entro opcon 4')              
+            print ('Entro opcion 4')              
         case _:
             print ('opcion no valida')  
     
@@ -125,4 +124,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
