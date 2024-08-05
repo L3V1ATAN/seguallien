@@ -46,9 +46,15 @@ class SeguAllien:
     @staticmethod
     def script(sip, sport):
         os.system('clear')
+        os.system(f"mkdir {sip}")
+        os.system(f"cd {sip}")
+        os.system(f"nmap -sV -Pn -p{sport} --open -oN Version_{sip}.nmap --system-dns --stats-every 3s {sip} -vvv")
         os.system(f"nmap -sV -Pn --script auth -p{sport} --open -oN auth_{sip}.nmap --system-dns --stats-every 3s {sip} -vvv")
         os.system(f"nmap -sV -Pn --script default -p{sport} --open -oN default_{sip}.nmap --system-dns --stats-every 3s {sip} -vvv")
         os.system(f"nmap -sV -Pn --script safe -p{sport} --open -oN safe_{sip}.nmap --system-dns --stats-every 3s {sip} -vvv")
+        os.system(f"nmap -sV -Pn --script vuln -p{sport} --open -oN vuln_{sip}.nmap --system-dns --stats-every 3s {sip} -vvv")
+        os.system('cd ..')
+    
               
 def deldupli(open_puerto):
     #Eliminar Duplicados
