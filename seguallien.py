@@ -42,9 +42,13 @@ class SeguAllien:
         #Convierte los puesrtos de string a lista
         open_port=str.split(port_open)          
         deldupli(open_port)
-
-      
-         
+    
+    def script(sip,sport):
+        os.system('clear')
+        os.system(f"nmap -sV -Pn --script auth -p{sport} --open -oN auth_{sip}.nmap --system-dns --stats-every 3s {sip} -vvv")
+        os.system(f"nmap -sV -Pn --script default -p{sport} --open -oN default_{sip}.nmap --system-dns --stats-every 3s {sip} -vvv")
+        os.system(f"nmap -sV -Pn --script safe -p{sport} --open -oN safe_{sip}.nmap --system-dns --stats-every 3s {sip} -vvv")
+              
 def deldupli(open_puerto):
     #Eliminar Duplicados
     open_puerto[:] = list(dict.fromkeys(open_puerto))
@@ -64,6 +68,7 @@ def usage():
      EJEMPLOS
       python seguallien.py -iL archivo""")
 
+
 def banner():
     print ("""
   ____                          _     _  _  _              
@@ -75,7 +80,7 @@ def banner():
                                                  BY:JEHEMO
     1. All Port Open TCP nmap
     2. ALL port Open UDP nmap
-    3  Other options one
+    3  Script auth default safe
     4. Other options two  """ )
     
 
@@ -92,7 +97,12 @@ def main():
         case '2':
             print ('Entro opcon 2')  
         case '3':
-            print ('Entro opcon 3')  
+            print ('Entro opcon 3')
+            ipscript = input('    Ingrese la Ip a revisar : ')
+            portcript = input('   Ingrese la Puertos a revisar : ')
+            os.system('clear')
+            banner()
+            SeguAllien.script(ipscript,portcrip)
         case '4':
             print ('Entro opcon 4')              
         case _:
