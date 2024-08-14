@@ -129,7 +129,11 @@ def main():
             banner()
             SeguAllien.jmap(ip)
         case '2':
-            print ('Entro opcion 2')  
+            print ('Entro opcion 2')
+            ip = input('    Ingrese nombre archivo con listado de IPs : ')
+            #os.system('clear')
+            banner()
+            SeguAllien.umap(ip)
         case '3':
             print ('Entro opcion 3')
             ipscript = input('    Ingrese la Ip a revisar : ')
