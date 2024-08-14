@@ -17,7 +17,7 @@ class SeguAllien:
     def jmap(lip):
         nm = nmap.PortScanner()
         print('Ejecucion jmap...')
-        results = nm.scan(arguments='-sS -sV -n -Pn --top-ports 1000 -iL ' + lip)
+        results = nm.scan(arguments='-sS -sV -n -Pn --top-ports 4000 -iL ' + lip)
         port_open = ''
         open_port = []
         #results = nm.scan(arguments='-n -Pn -p 21 --script=/usr/share/nmap/scripts/ftp-anon.nse  -iL ' + lip)
@@ -42,7 +42,36 @@ class SeguAllien:
         #Convierte los puertos de string a lista
         open_port = str.split(port_open)          
         deldupli(open_port)
-    
+        
+      def umap(lip):
+        nm = nmap.PortScanner()
+        print('Ejecucion umap...')
+        results = nm.scan(arguments='-sU -sV -n -Pn --top-ports 1000 -iL ' + lip)
+        port_open = ''
+        open_port = []
+        #results = nm.scan(arguments='-n -Pn -p 21 --script=/usr/share/nmap/scripts/ftp-anon.nse  -iL ' + lip)
+        #Script de vulnerabilidades
+        #results = nm.scan(arguments='-p 21,23,80,3389 --script=/usr/share/nmap/scripts/vulners.nse -iL ' + lip)
+        #os.system('clear')
+        #print(nm.command_line())
+        #print(nm.scaninfo())
+        for host in nm.all_hosts():
+            print('----------------------------------------------------')
+            print('Host : %s (%s)' % (host, nm[host].hostname()))
+            print('State : {0}'.format(nm[host].state())) 
+            for proto in nm[host].all_protocols():
+                print('++++++++++++++++++++++++++++++++++++')
+                print('Protocol : %s' % proto)
+                lport = nm[host][proto].keys()
+                sorted_lport = sorted(lport)
+                for port in sorted_lport:
+                    print('port : %s\tstate : %s' % (port, nm[host][proto][port]['state']))
+                    port_open = port_open + ' ' + str(port)
+                    # print('Port OPEN: ' + port_open + ' ' + str(host))
+        #Convierte los puertos de string a lista
+        open_port = str.split(port_open)          
+        deldupli(open_port)
+          
     @staticmethod
     def script(sip, sport):
         os.system('clear')
