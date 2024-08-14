@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#Banner http://www.patorjk.com/software/taag/#p=display&h=1&v=0&f=Standard&t=SeguAllien
-#Paso 1 sudo apt-get install python-pip nmap
-#Paso 2 sudo pip install python-nmap
-#https://www.youtube.com/watch?v=zZZVCULfDXs&t=395s
-#https://subscription.packtpub.com/book/cloud-and-networking/9781788992510/14/ch14lvl1sec27/chapter-4-http-programming
-#https://pypi.org/project/python-nmap/
-#https://www.pythonparatodo.com/?p=251  
+# Banner http://www.patorjk.com/software/taag/#p=display&h=1&v=0&f=Standard&t=SeguAllien
+# Paso 1 sudo apt-get install python-pip nmap
+# Paso 2 sudo pip install python-nmap
+# https://www.youtube.com/watch?v=zZZVCULfDXs&t=395s
+# https://subscription.packtpub.com/book/cloud-and-networking/9781788992510/14/ch14lvl1sec27/chapter-4-http-programming
+# https://pypi.org/project/python-nmap/
+# https://www.pythonparatodo.com/?p=251  
 import sys
-#import time
+# import time
 import nmap
 import os
 
@@ -20,12 +20,12 @@ class SeguAllien:
         results = nm.scan(arguments='-sS -sV -n -Pn --top-ports 4000 -iL ' + lip)
         port_open = ''
         open_port = []
-        #results = nm.scan(arguments='-n -Pn -p 21 --script=/usr/share/nmap/scripts/ftp-anon.nse  -iL ' + lip)
-        #Script de vulnerabilidades
-        #results = nm.scan(arguments='-p 21,23,80,3389 --script=/usr/share/nmap/scripts/vulners.nse -iL ' + lip)
-        #os.system('clear')
-        #print(nm.command_line())
-        #print(nm.scaninfo())
+        # results = nm.scan(arguments='-n -Pn -p 21 --script=/usr/share/nmap/scripts/ftp-anon.nse  -iL ' + lip)
+        # Script de vulnerabilidades
+        # results = nm.scan(arguments='-p 21,23,80,3389 --script=/usr/share/nmap/scripts/vulners.nse -iL ' + lip)
+        # os.system('clear')
+        # print(nm.command_line())
+        # print(nm.scaninfo())
         for host in nm.all_hosts():
             print('----------------------------------------------------')
             print('Host : %s (%s)' % (host, nm[host].hostname()))
@@ -39,22 +39,23 @@ class SeguAllien:
                     print('port : %s\tstate : %s' % (port, nm[host][proto][port]['state']))
                     port_open = port_open + ' ' + str(port)
                     # print('Port OPEN: ' + port_open + ' ' + str(host))
-        #Convierte los puertos de string a lista
+        # Convierte los puertos de string a lista
         open_port = str.split(port_open)          
         deldupli(open_port)
-        
-      def umap(lip):
+    
+    @staticmethod
+    def umap(lip):
         nm = nmap.PortScanner()
         print('Ejecucion umap...')
         results = nm.scan(arguments='-sU -sV -n -Pn --top-ports 1000 -iL ' + lip)
         port_open = ''
         open_port = []
-        #results = nm.scan(arguments='-n -Pn -p 21 --script=/usr/share/nmap/scripts/ftp-anon.nse  -iL ' + lip)
-        #Script de vulnerabilidades
-        #results = nm.scan(arguments='-p 21,23,80,3389 --script=/usr/share/nmap/scripts/vulners.nse -iL ' + lip)
-        #os.system('clear')
-        #print(nm.command_line())
-        #print(nm.scaninfo())
+        # results = nm.scan(arguments='-n -Pn -p 21 --script=/usr/share/nmap/scripts/ftp-anon.nse  -iL ' + lip)
+        # Script de vulnerabilidades
+        # results = nm.scan(arguments='-p 21,23,80,3389 --script=/usr/share/nmap/scripts/vulners.nse -iL ' + lip)
+        # os.system('clear')
+        # print(nm.command_line())
+        # print(nm.scaninfo())
         for host in nm.all_hosts():
             print('----------------------------------------------------')
             print('Host : %s (%s)' % (host, nm[host].hostname()))
@@ -68,7 +69,7 @@ class SeguAllien:
                     print('port : %s\tstate : %s' % (port, nm[host][proto][port]['state']))
                     port_open = port_open + ' ' + str(port)
                     # print('Port OPEN: ' + port_open + ' ' + str(host))
-        #Convierte los puertos de string a lista
+        # Convierte los puertos de string a lista
         open_port = str.split(port_open)          
         deldupli(open_port)
           
@@ -84,18 +85,17 @@ class SeguAllien:
         os.system(f"nmap -sV -Pn --script vuln -p{sport} --open -oN vuln_{sip}.nmap --system-dns --stats-every 3s {sip} -vvv")
         os.system('cd ..')
     
-              
 def deldupli(open_puerto):
-    #Eliminar Duplicados
+    # Eliminar Duplicados
     open_puerto[:] = list(dict.fromkeys(open_puerto))
-    #Ordenar Lista
-    #open_puerto.sort()
+    # Ordenar Lista
+    # open_puerto.sort()
     print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
     print('Puertos Abiertos :')    
-    #Imprimir
+    # Imprimir
     for i in range(0, len(open_puerto)):
         print(open_puerto[i], end=",")
-
+ 
 def usage():
     print ("""Uso: seguallien.py {OPTION} {CADENA | HOST}
      OPCIONES:
@@ -103,7 +103,7 @@ def usage():
       -iL, : Lista de IPs de archivo
      EJEMPLOS
       python seguallien.py -iL archivo""")
-
+ 
 def banner():
     print ("""
   ____                          _     _  _  _              
@@ -125,13 +125,13 @@ def main():
         case '1':
             print ('Entro opcion 1')
             ip = input('    Ingrese nombre archivo con listado de IPs : ')
-            #os.system('clear')
+            # os.system('clear')
             banner()
             SeguAllien.jmap(ip)
         case '2':
             print ('Entro opcion 2')
             ip = input('    Ingrese nombre archivo con listado de IPs : ')
-            #os.system('clear')
+            # os.system('clear')
             banner()
             SeguAllien.umap(ip)
         case '3':
